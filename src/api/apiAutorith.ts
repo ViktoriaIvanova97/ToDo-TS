@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const AUTH_URL = import.meta.env.VITE_AUTH_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 interface RegisterData {
   email: string;
@@ -19,7 +19,7 @@ interface AuthResponse {
 
 export const register = async (data: RegisterData): Promise<AuthResponse> => {
   const response = await axios.post<AuthResponse>(
-    `${AUTH_URL}/auth/register`,
+    `${BASE_URL}/auth/register`,
     data,
   );
   localStorage.setItem("token", response.data.access_token);
@@ -28,7 +28,7 @@ export const register = async (data: RegisterData): Promise<AuthResponse> => {
 
 export const login = async (data: LoginData): Promise<AuthResponse> => {
   const response = await axios.post<AuthResponse>(
-    `${AUTH_URL}/auth/login`,
+    `${BASE_URL}/auth/login`,
     data,
   );
   localStorage.setItem("token", response.data.access_token);

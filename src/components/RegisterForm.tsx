@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { register, login } from "../api/apiAutorith";
 import axios from "axios";
 
@@ -17,8 +18,10 @@ function RegisterForm() {
   });
   const [error, setError] = useState<string | null>(null);
 
+  const navigate = useNavigate();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.value]: e.target.value });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -38,6 +41,7 @@ function RegisterForm() {
         });
       }
       console.log("Успешно! Токен сохранён");
+      navigate("/todo");
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.message || "Ошибка сервера");
@@ -56,16 +60,27 @@ function RegisterForm() {
       <form onSubmit={handleSubmit}>
         <div>
           <p>Логин:</p>
-          <input type="text" value={form.name} onChange={handleChange} />
+          <input
+            type="text"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+          />
         </div>
         <div>
           <p>E-mail:</p>
-          <input type="email" value={form.email} onChange={handleChange} />
+          <input
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+          />
         </div>
         <div>
           <p>Пароль:</p>
           <input
             type="password"
+            name="password"
             value={form.password}
             onChange={handleChange}
           />
@@ -94,19 +109,22 @@ function RegisterForm() {
       <form onSubmit={handleSubmit}>
         <div>
           <p>E-mail:</p>
-          <input type="email" value={form.email} onChange={handleChange} />
+          <input type="email" 
+          name='email'
+          value={form.email} onChange={handleChange} />
         </div>
         <div>
           <p>Пароль:</p>
           <input
             type="password"
+            name='password'
             value={form.password}
             onChange={handleChange}
           />
         </div>
+        <button type="submit">Войти</button>
       </form>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <button type="submit">Войти</button>
     </div>
   );
 }

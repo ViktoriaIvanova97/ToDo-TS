@@ -1,19 +1,18 @@
-import type { Todo } from "../api/apiTodo"
-
+import type { Todo } from "../api/apiTodo";
 
 interface TodoItemProps {
   todo: Todo;
 }
 
-
-function Task({todo}:TodoItemProps) {
+function Task({ todo }: TodoItemProps) {
   return (
-    <li>
+    <li style={{display:'flex'}}>
+      <input type="checkbox" />
+      <p>{todo.title}</p> - 
       <p>{todo.description}</p>
-      <span>{todo.completed ? '✅ Выполнено' : '⏳ В работе'}</span>
+      <button>Изменить</button>
     </li>
   );
-
 }
 
-export default Task
+export default Task;

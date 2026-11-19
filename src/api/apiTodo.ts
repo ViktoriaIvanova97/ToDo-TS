@@ -13,9 +13,21 @@ export interface Todo {
   completed: boolean;
 }
 
+export interface CreateTodoDto {
+  title: string;
+  description: string;
+}
+
 export const getAllTasks = async (): Promise<Todo[]> => {
-  const response = await axios.get<{data:Todo[]}>(`${BASE_URL}/todos`, {
+  const response = await axios.get<{ data: Todo[] }>(`${BASE_URL}/todos`, {
     headers: authHeaders(),
   });
   return response.data.data;
+};
+
+export const createTodo = async (data: CreateTodoDto): Promise<Todo> => {
+  const response = await axios.post<Todo>(`${BASE_URL}/todos`, data, {
+    headers: authHeaders(),
+  });
+  return response.data;
 };

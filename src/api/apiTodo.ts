@@ -31,3 +31,10 @@ export const createTodo = async (data: CreateTodoDto): Promise<Todo> => {
   });
   return response.data;
 };
+
+
+export const deleteTask =async(id:number | string): Promise<void>=>{
+  await axios.delete(`${BASE_URL}/todos/${id}`,{
+    headers: authHeaders()
+  })
+}

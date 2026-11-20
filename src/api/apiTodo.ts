@@ -32,9 +32,31 @@ export const createTodo = async (data: CreateTodoDto): Promise<Todo> => {
   return response.data;
 };
 
+export const deleteTask = async (id: number | string): Promise<void> => {
+  await axios.delete(`${BASE_URL}/todos/${id}`, {
+    headers: authHeaders(),
+  });
+};
 
-export const deleteTask =async(id:number | string): Promise<void>=>{
-  await axios.delete(`${BASE_URL}/todos/${id}`,{
-    headers: authHeaders()
-  })
-}
+export const toggleTodoApi = async ({
+  id,
+  completed,
+}: {
+  id: number | string;
+  completed: boolean;
+}): Promise<void> => {
+  await axios.patch(
+    `${BASE_URL}/todos/${id}/toggle`,
+    { completed },
+    { headers: authHeaders() },
+  );
+};
+
+export const updateTodoApi = async (
+  id: number | string,
+  dto: { title: string; description: string },
+): Promise<void> => {
+  await axios.patch(`${BASE_URL}/todos/${id}`, dto, {
+    headers: authHeaders(),
+  });
+};

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Todo } from "../api/apiTodo";
+import { deleteTask } from "../api/apiTodo";
 import Task from "./Task";
 
 interface AllTasksProps {
@@ -23,9 +24,28 @@ function AllTasks({ todos, onDelete, onToggle, onUpdate }: AllTasksProps) {
   } else {
     visibleTodos = todos.filter((t) => t.completed);
   }
+  const lengthCompleted = todos.filter((el) => !el.completed).length;
 
+  const completedIds = todos.filter((t) => t.completed).map((t) => t.id);
+
+  const handleDeleteCompleted = async () => {
+    if (completedIds.length === 0) return;
+    try {
+      for (const id of completedIds) {
+        await deleteTask(id);
+      }
+      onUpdate();
+    } catch (err: unknown) {}
+  };
   return (
-    <div>
+    <div
+      style={{
+        width: "600px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <ul>
         {visibleTodos.map((todo) => (
           <Task
@@ -38,9 +58,15 @@ function AllTasks({ todos, onDelete, onToggle, onUpdate }: AllTasksProps) {
         ))}
       </ul>
       <div style={{ display: "flex" }}>
-        <button onClick={()=> setFilter('all')}>Все</button>
-        <button  onClick={()=> setFilter('active')}>Активные</button>
-        <button  onClick={()=> setFilter('completed')}>Готовые</button>
+        <button onClick={() => setFilter("all")}>Все</button>
+        <button onClick={() => setFilter("active")}>Активные</button>
+        <button onClick={() => setFilter("completed")}>Готовые</button>
+      </div>
+      <div style={{display:"flex"}}>
+        <p>Осталось дел: {lengthCompleted}</p>
+        <button onClick={() => handleDeleteCompleted()}>
+          Очистить выполненные
+        </button>
       </div>
     </div>
   );

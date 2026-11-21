@@ -35,25 +35,31 @@ function TodoList() {
     }
   };
 
-  const toggleTodo = async(id:number|string, completed:boolean)=>{
+  const toggleTodo = async (id: number | string, completed: boolean) => {
     try {
-      await toggleTodoApi({id, completed:!completed})
-      load()
-    } catch (err:unknown) {
-      setError("Не удалось обновить задачу")
-      
+      await toggleTodoApi({ id, completed: !completed });
+      load();
+    } catch (err: unknown) {
+      setError("Не удалось обновить задачу");
     }
-  }
+  };
 
   useEffect(() => {
     load();
   }, []);
 
   return (
-    <div>
+    <div
+      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    >
       <h2>Мои Todo</h2>
       <TodoInputTask onCreated={load} />
-      <AllTasks todos={todos} onDelete={deleteTodo} onToggle={toggleTodo}onUpdate={load} />
+      <AllTasks
+        todos={todos}
+        onDelete={deleteTodo}
+        onToggle={toggleTodo}
+        onUpdate={load}
+      />
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
